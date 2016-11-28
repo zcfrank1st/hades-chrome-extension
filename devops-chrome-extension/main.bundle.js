@@ -52831,13 +52831,13 @@ module.exports = "<div class=\"row vertical-center\">\n  <div class=\"col-sm-6 o
 /* 506 */
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"row center-block\" *ngIf=\"disable\" [ngClass] = \"{'vertical-center': disable}\">\n  <div class=\"col-sm-6 offset-sm-3\" style=\"text-align: center;\">\n    <div class=\"alert alert-warning alert-dismissible fade in\" role=\"alert\">\n      <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n      <strong>[WARN]</strong> no permission creating config!\n    </div>\n  </div>\n</div>\n<div class=\"row\" [ngClass] = \"{'vertical-center': !disable}\">\n  <div class=\"col-sm-4 offset-sm-4\" style=\"text-align: center;\">\n    <button (click)=\"createProjectConfigSkeleton()\" type=\"button\"\n    class =\"btn btn-outline-info\"\n    [attr.disabled] = \"disable ? true : null\">Create</button>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row center-block\" *ngIf=\"ndisable\" [ngClass] = \"{'vertical-center': ndisable}\">\n  <div class=\"col-sm-6 offset-sm-3\" style=\"text-align: center;\">\n    <div class=\"alert alert-warning alert-dismissible fade in\" role=\"alert\">\n      <button (click)=\"removeClass()\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n      <strong>[WARN]</strong> no permission creating config!\n    </div>\n  </div>\n</div>\n<div class=\"row vertical-center\">\n  <div class=\"col-sm-4 offset-sm-4\" style=\"text-align: center;\">\n    <button (click)=\"createProjectConfigSkeleton()\" type=\"button\"\n    class =\"btn btn-outline-info\"\n    [attr.disabled] = \"disable ? true : null\">Create</button>\n  </div>\n</div>\n"
 
 /***/ },
 /* 507 */
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"row\" *ngIf=\"notification\" [ngClass] = \"{'vertical-center': notification}\">\n  <div class=\"col-sm-6 offset-sm-3\" style=\"text-align: center;\">\n    <div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\">\n      <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n      <strong>[ERR]</strong> Uname or Pkey empty!\n    </div>\n  </div>\n</div>\n<div class=\"row\" [ngClass] = \"{'vertical-center': !notification}\">\n  <div class=\"col-sm-3 offset-sm-2\" style=\"text-align: center;\">\n    <div class=\"input-group\">\n      <span class=\"input-group-addon\" id=\"basic-addon1\">@</span>\n      <input #userName type=\"text\" class=\"form-control\" placeholder=\"Uname\" aria-describedby=\"basic-addon1\">\n    </div>\n  </div>\n  <div class=\"col-sm-3\" style=\"text-align: center;margin-top: 2px;\">\n    <div class=\"input-group\">\n      <span class=\"input-group-addon\" id=\"basic-addon1\">@</span>\n      <input #privateKey type=\"text\" class=\"form-control\" placeholder=\"Pkey\" aria-describedby=\"basic-addon1\">\n    </div>\n  </div>\n  <div class=\"col-sm-2\" style=\"text-align: center;margin-top: 2px;\">\n    <button (click)=\"onSubmit(privateKey.value, userName.value)\" type=\"button\" class=\"btn btn-success\">Submit</button>\n  </div>\n</div>"
+module.exports = "<div class=\"row\" *ngIf=\"notification\" [ngClass] = \"{'vertical-center': notification}\">\n  <div class=\"col-sm-6 offset-sm-3\" style=\"text-align: center;\">\n    <div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\">\n      <button (click)=\"removeClass()\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n      <strong>[ERR]</strong> Uname or Pkey empty!\n    </div>\n  </div>\n</div>\n<div class=\"row\" [ngClass] = \"{'vertical-center': !notification}\">\n  <div class=\"col-sm-3 offset-sm-2\" style=\"text-align: center;\">\n    <div class=\"input-group\">\n      <span class=\"input-group-addon\" id=\"basic-addon1\">@</span>\n      <input #userName type=\"text\" class=\"form-control\" placeholder=\"Uname\" aria-describedby=\"basic-addon1\">\n    </div>\n  </div>\n  <div class=\"col-sm-3\" style=\"text-align: center;margin-top: 2px;\">\n    <div class=\"input-group\">\n      <span class=\"input-group-addon\" id=\"basic-addon1\">@</span>\n      <input #privateKey type=\"text\" class=\"form-control\" placeholder=\"Pkey\" aria-describedby=\"basic-addon1\">\n    </div>\n  </div>\n  <div class=\"col-sm-2\" style=\"text-align: center;margin-top: 2px;\">\n    <button (click)=\"onSubmit(privateKey.value, userName.value)\" type=\"button\" class=\"btn btn-success\">Submit</button>\n  </div>\n</div>"
 
 /***/ },
 /* 508 */
@@ -66147,6 +66147,7 @@ var DispatcherComponent = (function () {
         this.restfulService = restfulService;
         this.statusService = statusService;
         this.disable = false;
+        this.ndisable = false;
     }
     DispatcherComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -66164,11 +66165,13 @@ var DispatcherComponent = (function () {
                 else {
                     if (message.code !== 0) {
                         _this.disable = true;
+                        _this.ndisable = true;
                     }
                 }
             }, function (error) {
                 console.log(error);
                 _this.disable = true;
+                _this.ndisable = true;
             });
         });
     };
@@ -66179,6 +66182,10 @@ var DispatcherComponent = (function () {
             console.log(message);
             _this.navigateService.jump2Target("manage");
         }, function (error) { return console.log(error); });
+    };
+    DispatcherComponent.prototype.removeClass = function () {
+        this.ndisable = false;
+        this.disable = true;
     };
     DispatcherComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
@@ -66250,6 +66257,9 @@ var LoginComponent = (function () {
         else {
             this.notification = true;
         }
+    };
+    LoginComponent.prototype.removeClass = function () {
+        this.notification = false;
     };
     LoginComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({

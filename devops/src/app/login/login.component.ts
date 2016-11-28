@@ -32,4 +32,8 @@ export class LoginComponent implements OnInit {
       this.notification = true;
     }
   }
+
+  removeClass () {
+    this.notification = false;
+  }
 }

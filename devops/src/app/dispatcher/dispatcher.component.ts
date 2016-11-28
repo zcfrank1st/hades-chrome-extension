@@ -12,6 +12,7 @@ import { StatusService } from '../status.service';
 })
 export class DispatcherComponent implements OnInit {
   public disable = false;
+  public ndisable = false;
   private path;
 
   constructor(
@@ -41,12 +42,14 @@ export class DispatcherComponent implements OnInit {
         } else {
           if (message.code !== 0) {
             this.disable = true;
+            this.ndisable = true;
           }
         }
       },
       error => {
         console.log(error);
         this.disable = true;
+        this.ndisable = true;
       });
     });
   }
@@ -64,5 +67,10 @@ export class DispatcherComponent implements OnInit {
       },
       error => console.log(error)
     );
+  }
+
+  removeClass () {
+    this.ndisable = false;
+    this.disable = true;
   }
 }
