@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./manage.component.css']
 })
 export class ManageComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit() {

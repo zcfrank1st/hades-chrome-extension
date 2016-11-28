@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { AppComponent } from './app.component';
@@ -12,16 +11,16 @@ import { ManageComponent } from './manage/manage.component';
 import { DispatcherComponent } from './dispatcher/dispatcher.component';
 import { BlankComponent } from './blank/blank.component';
 
-const appRoutes: Routes = [
+const rootRoutes: Routes = [
   {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
   },
   { path: 'login', component: LoginComponent },
-  { path: 'manage', component: ManageComponent },
   { path: 'dispatcher', component: DispatcherComponent },
-  { path: 'blank', component: BlankComponent }
+  { path: 'blank', component: BlankComponent }，
+  { path: 'manage', component: ManageComponent}
 ];
 
 @NgModule({
@@ -36,8 +35,7 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes),
-    NgbModule.forRoot()
+    RouterModule.forRoot(rootRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
