@@ -1,0 +1,27 @@
+<div class="row" *ngIf="notification" [ngClass] = "{'vertical-center': notification}">
+  <div class="col-sm-6 offset-sm-3" style="text-align: center;">
+    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>[ERR]</strong> Uname or Pkey empty!
+    </div>
+  </div>
+</div>
+<div class="row" [ngClass] = "{'vertical-center': !notification}">
+  <div class="col-sm-3 offset-sm-2" style="text-align: center;">
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">@</span>
+      <input #userName type="text" class="form-control" placeholder="Uname" aria-describedby="basic-addon1">
+    </div>
+  </div>
+  <div class="col-sm-3" style="text-align: center;margin-top: 2px;">
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">@</span>
+      <input #privateKey type="text" class="form-control" placeholder="Pkey" aria-describedby="basic-addon1">
+    </div>
+  </div>
+  <div class="col-sm-2" style="text-align: center;margin-top: 2px;">
+    <button (click)="onSubmit(privateKey.value, userName.value)" type="button" class="btn btn-success">Submit</button>
+  </div>
+</div>

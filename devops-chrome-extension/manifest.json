@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "gitlab-hades-extension",
+    "description": "a chrome plugin for hades",
+    "version": "0.0.1",
+    "icons": {
+        "20": "logo/hades20.png",
+        "48": "logo/hades48.png",
+        "128": "logo/hades128.png"
+    },
+    "browser_action": {
+        "default_title": "gitlab-hades-extension",
+        "default_popup": "index.html"
+    },
+    "permissions": [
+        "http://localhost:8080/",
+        "tabs"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
