@@ -78,7 +78,7 @@ export class RestfulService {
     });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.delete(this.restfulUrl + '/config/' + projectName + '/' + env + '/' + key, options)
+    return this.http.delete(this.restfulUrl + '/config/' + projectName + '/' + env + '/' + key + '/', options)
       .map(this.extractData)
       .catch(this.handleError);
   }

@@ -6,7 +6,7 @@ export class ProjectService {
   private pattern;
 
   constructor() {
-    this.pattern = new RegExp("(http|https)://.*" +"/(" + this.username + ")/(\\w+)/?.*");
+    this.pattern = new RegExp("(http|https)://.*" +"/(.*)/(\\w+)/?.*");
   }
 
   isProjectPage (path: string) {
