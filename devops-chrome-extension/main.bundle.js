@@ -44505,7 +44505,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ProjectService = (function () {
     function ProjectService() {
         this.username = window.localStorage.getItem("USER-NAME");
-        this.pattern = new RegExp("(http|https)://.*" + "/(" + this.username + ")/(\\w+)/?.*");
+        this.pattern = new RegExp("(http|https)://.*" + "/(.*)/(\\w+)/?.*");
     }
     ProjectService.prototype.isProjectPage = function (path) {
         return this.pattern.test(path);
@@ -44566,7 +44566,7 @@ var RestfulService = (function () {
             'username': username
         });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestOptions */]({ headers: headers });
-        return this.http.get(this.restfulUrl + "/config/" + projectName, options)
+        return this.http.get(this.encodeHttpUrl(this.restfulUrl + "/config/" + projectName), options)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -44590,7 +44590,7 @@ var RestfulService = (function () {
             'username': username
         });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestOptions */]({ headers: headers });
-        return this.http.get(this.restfulUrl + "/config?project=" + projectName + "&env=" + env, options)
+        return this.http.get(this.encodeHttpUrl(this.restfulUrl + "/config?project=" + projectName + "&env=" + env), options)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -44620,7 +44620,7 @@ var RestfulService = (function () {
             'username': username
         });
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestOptions */]({ headers: headers });
-        return this.http.delete(this.restfulUrl + '/config/' + projectName + '/' + env + '/' + key, options)
+        return this.http.delete(this.encodeHttpUrl(this.restfulUrl + '/config/' + projectName + '/' + env + '/' + key), options)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -44640,6 +44640,9 @@ var RestfulService = (function () {
         }
         console.error(errMsg);
         return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].throw(errMsg);
+    };
+    RestfulService.prototype.encodeHttpUrl = function (url) {
+        return encodeURI(url);
     };
     RestfulService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* Injectable */])(), 
