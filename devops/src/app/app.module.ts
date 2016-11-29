@@ -19,7 +19,7 @@ const rootRoutes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'dispatcher', component: DispatcherComponent },
-  { path: 'blank', component: BlankComponent }，
+  { path: 'blank', component: BlankComponent },
   { path: 'manage', component: ManageComponent}
 ];
 

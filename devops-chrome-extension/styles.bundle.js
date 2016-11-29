@@ -1,16 +1,6 @@
 webpackJsonp([1,3],{
 
-/***/ 1047:
-/***/ function(module, exports, __webpack_require__) {
-
-__webpack_require__(487);
-__webpack_require__(485);
-module.exports = __webpack_require__(486);
-
-
-/***/ },
-
-/***/ 177:
+/***/ 171:
 /***/ function(module, exports) {
 
 /*
@@ -263,7 +253,7 @@ function updateLink(linkElement, obj) {
 
 /***/ },
 
-/***/ 178:
+/***/ 172:
 /***/ function(module, exports) {
 
 /*
@@ -320,16 +310,16 @@ module.exports = function() {
 
 /***/ },
 
-/***/ 485:
+/***/ 417:
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(493);
+var content = __webpack_require__(425);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(177)(content, {});
+var update = __webpack_require__(171)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -347,16 +337,16 @@ if(false) {
 
 /***/ },
 
-/***/ 486:
+/***/ 418:
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(494);
+var content = __webpack_require__(426);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(177)(content, {});
+var update = __webpack_require__(171)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -374,16 +364,16 @@ if(false) {
 
 /***/ },
 
-/***/ 487:
+/***/ 419:
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(495);
+var content = __webpack_require__(427);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(177)(content, {});
+var update = __webpack_require__(171)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -401,10 +391,10 @@ if(false) {
 
 /***/ },
 
-/***/ 493:
+/***/ 425:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(178)();
+exports = module.exports = __webpack_require__(172)();
 // imports
 
 
@@ -416,10 +406,10 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0-alpha.5 (https://getbootstrap.
 
 /***/ },
 
-/***/ 494:
+/***/ 426:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(178)();
+exports = module.exports = __webpack_require__(172)();
 // imports
 
 
@@ -431,20 +421,30 @@ exports.push([module.i, ".tether-element,.tether-element *,.tether-element :afte
 
 /***/ },
 
-/***/ 495:
+/***/ 427:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(178)();
+exports = module.exports = __webpack_require__(172)();
 // imports
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n.vertical-center {\n  margin-top: 20%;\n  margin-bottom: 20%;\n}\n\nbody{\n   width: 400px;\n   height: 300px;\n}", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n.vertical-center {\n  margin-top: 20%;\n  margin-bottom: 20%;\n}\n\nbody{\n   width: 500px;\n   height: 300px;\n}\n", ""]);
 
 // exports
 
 
+/***/ },
+
+/***/ 977:
+/***/ function(module, exports, __webpack_require__) {
+
+__webpack_require__(419);
+__webpack_require__(417);
+module.exports = __webpack_require__(418);
+
+
 /***/ }
 
-},[1047]);
+},[977]);
 //# sourceMappingURL=styles.bundle.map

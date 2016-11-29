@@ -1,0 +1,41 @@
+<div class="row" style="margin-top: 10px;margin-bottom: 10px">
+  <div class="col-xs-3">
+    <button type="button" class="btn btn-sm" (click)="changeEnv(0)"
+            [ngClass]="{'btn-primary': env==0,'btn-secondary': env==1}">dev
+    </button>
+    <button type="button" class="btn btn-sm" (click)="changeEnv(1)"
+            [ngClass]="{'btn-primary': env==1,'btn-secondary': env==0}">prd
+    </button>
+  </div>
+  <div class="col-xs-3">
+    <div class="input-group-sm">
+      <input type="text" class="form-control" placeholder="key" [(ngModel)]="newKey">
+    </div>
+  </div>
+  <div class="col-xs-4">
+    <div class="input-group-sm">
+      <input type="text" class="form-control" placeholder="value" [(ngModel)]="newValue">
+    </div>
+  </div>
+  <div class="col-xs-2">
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="addConfig(newKey,newValue)">add</button>
+  </div>
+</div>
+<table class="table table-striped table-bordered table-sm">
+  <thead>
+  <tr>
+    <th>key</th>
+    <th>value</th>
+    <th style="width: 1%;"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of props">
+    <td>{{item.key}}</td>
+    <td>{{item.val}}</td>
+    <td>
+      <button type="button" class="btn btn-default btn-sm" (click)="delConfig(item.key)">-</button>
+    </td>
+  </tr>
+  </tbody>
+</table>

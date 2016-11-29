@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RestfulService {
-  private restfulUrl = 'http://localhost:8080';  //TODO URL to web API
+  private restfulUrl = 'http://192.168.33.142:8080';  //TODO URL to web API
 
   constructor (private http: Http) {}
 
@@ -34,6 +34,53 @@ export class RestfulService {
     return this.http.post(this.restfulUrl + "/config/skeleton", projectName, options)
                     .map(this.extractData)
                     .catch(this.handleError);
+  }
+
+  getConfig (projectName: string, projectPath: string, token: string, username: string, env: number): Observable<Message> {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'token': token,
+      'projectpath' : projectPath,
+      'username': username
+    });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(this.restfulUrl + "/config?project=" + projectName + "&env=" + env, options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  addConfig (projectName: string, projectPath: string, token: string, username: string, env: number, key: string, value: string): Observable<Message> {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'token': token,
+      'projectpath' : projectPath,
+      'username': username
+    });
+    let options = new RequestOptions({ headers: headers });
+    let configContent = {
+      project:projectName,
+      env:env,
+      key:key,
+      value:value
+    };
+    return this.http.post(this.restfulUrl + '/config',configContent, options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  delConfig (projectName: string, projectPath: string, token: string, username: string, env: number, key: string): Observable<Message> {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'token': token,
+      'projectpath' : projectPath,
+      'username': username
+    });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.delete(this.restfulUrl + '/config/' + projectName + '/' + env + '/' + key, options)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
 
