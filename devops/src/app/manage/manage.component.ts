@@ -44,11 +44,13 @@ export class ManageComponent implements OnInit {
     }
     this.projectService.currentUrl().then((res) => {
       this.path = res;
-      this.restfulService.addConfig(
+
+      this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(message => {
+        this.restfulService.addConfig(
         this.projectService.projectName(this.path),
         this.projectService.projectPath(this.path),
-        this.statusService.retrieve("PRIVATE-KEY"),
-        this.statusService.retrieve("USER-NAME"),
+        message["PRIVATE-KEY"],
+        message["USER-NAME"],
         this.env, key,value
       ).subscribe(
         message => {
@@ -59,6 +61,7 @@ export class ManageComponent implements OnInit {
         error => {
           console.log(error);
         });
+      });
     });
   }
 
@@ -66,11 +69,13 @@ export class ManageComponent implements OnInit {
     console.log('del start:' + key);
     this.projectService.currentUrl().then((res) => {
       this.path = res;
-      this.restfulService.delConfig(
+
+      this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(message => {
+        this.restfulService.delConfig(
         this.projectService.projectName(this.path),
         this.projectService.projectPath(this.path),
-        this.statusService.retrieve("PRIVATE-KEY"),
-        this.statusService.retrieve("USER-NAME"),
+        message["PRIVATE-KEY"],
+        message["USER-NAME"],
         this.env, key
       ).subscribe(
         message => {
@@ -81,17 +86,20 @@ export class ManageComponent implements OnInit {
         error => {
           console.log(error);
         });
+      });
     });
   }
 
   deleteProjectConfigs () {
     this.projectService.currentUrl().then((res) => {
       this.path = res;
-      this.restfulService.delProjectConfigs(
+
+      this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(message => {
+        this.restfulService.delProjectConfigs(
         this.projectService.projectName(this.path),
         this.projectService.projectPath(this.path),
-        this.statusService.retrieve("PRIVATE-KEY"),
-        this.statusService.retrieve("USER-NAME")
+        message["PRIVATE-KEY"],
+        message["USER-NAME"]
       ).subscribe(
         message => {
           if(message.code===0){
@@ -101,17 +109,20 @@ export class ManageComponent implements OnInit {
         error => {
           console.log(error);
         });
+      });
     });
   }
 
   private getConfig() {
     this.projectService.currentUrl().then((res) => {
       this.path = res;
-      this.restfulService.getConfig(
+
+      this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(message => {
+        this.restfulService.getConfig(
         this.projectService.projectName(this.path),
         this.projectService.projectPath(this.path),
-        this.statusService.retrieve("PRIVATE-KEY"),
-        this.statusService.retrieve("USER-NAME"),
+        message["PRIVATE-KEY"],
+        message["USER-NAME"],
         this.env
       ).subscribe(
         message => {
@@ -133,6 +144,7 @@ export class ManageComponent implements OnInit {
         error => {
           console.log(error);
         });
+      });
     });
   }
 }

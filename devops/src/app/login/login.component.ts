@@ -16,17 +16,22 @@ export class LoginComponent implements OnInit {
     private statusService: StatusService) {}
 
   ngOnInit() {
-    if (this.statusService.exists("PRIVATE-KEY") && this.statusService.exists("USER-NAME")) {
-      this.navigateService.jump2Target('dispatcher');
-    }
+    this.statusService
+    .chromeSyncExists(["PRIVATE-KEY", "USER-NAME"])
+    .subscribe(
+      message => {
+      if (message == true) {
+          this.navigateService.jump2Target('dispatcher');
+      }
+    });
   }
 
   onSubmit(privateKey: string, userName: string) {
     let privateKeyLength = privateKey.length;
     let userNameLength = userName.length;
     if (privateKeyLength !== 0 && userNameLength !== 0) {
-      this.statusService.store("PRIVATE-KEY", privateKey);
-      this.statusService.store("USER-NAME", userName);
+      this.statusService.chromeSyncStore({"PRIVATE-KEY": privateKey});
+      this.statusService.chromeSyncStore({"USER-NAME": userName});
       this.navigateService.jump2Target('dispatcher');
     } else {
       this.notification = true;
