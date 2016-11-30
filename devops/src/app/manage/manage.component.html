@@ -7,17 +7,17 @@
             [ngClass]="{'btn-primary': env==1,'btn-secondary': env==0}">prd
     </button>
   </div>
-  <div class="col-xs-3">
+  <div class="col-xs-3" *ngIf="show">
     <div class="input-group-sm">
       <input type="text" class="form-control" placeholder="key" [(ngModel)]="newKey">
     </div>
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-4" *ngIf="show">
     <div class="input-group-sm">
       <input type="text" class="form-control" placeholder="value" [(ngModel)]="newValue">
     </div>
   </div>
-  <div class="col-xs-2">
+  <div class="col-xs-2" *ngIf="show">
     <button type="button" class="btn btn-sm btn-outline-primary" (click)="addConfig(newKey,newValue)">add</button>
   </div>
 </div>
@@ -26,14 +26,14 @@
   <tr>
     <th>key</th>
     <th>value</th>
-    <th style="width: 1%;"></th>
+    <th style="width: 1%;" *ngIf="show"></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let item of props">
     <td>{{item.key}}</td>
     <td>{{item.val}}</td>
-    <td>
+    <td *ngIf="show">
       <button type="button" class="btn btn-default btn-sm" (click)="delConfig(item.key)">-</button>
     </td>
   </tr>

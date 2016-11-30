@@ -14,6 +14,7 @@ export class ManageComponent implements OnInit {
   env = 0;
   props:{}[];
   private path;
+  private show = false;
 
   constructor(private statusService: StatusService,
               private projectService: ProjectService,
@@ -92,8 +93,12 @@ export class ManageComponent implements OnInit {
         this.env
       ).subscribe(
         message => {
-          if(message.code===0){
-            let kvmap:{};
+          if(message.code === 0){
+            this.show = true;
+          } else if (message.code === 1) {
+            this.show = false;
+          }
+          let kvmap:{};
             kvmap = message.body;
             this.props = [];
             for(let key in kvmap){
@@ -102,7 +107,6 @@ export class ManageComponent implements OnInit {
                 val: kvmap[key]
               });
             }
-          }
         },
         error => {
           console.log(error);

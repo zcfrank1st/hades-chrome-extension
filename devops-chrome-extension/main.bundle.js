@@ -44505,7 +44505,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ProjectService = (function () {
     function ProjectService() {
         this.username = window.localStorage.getItem("USER-NAME");
-        this.pattern = new RegExp("(http|https)://.*" + "/(.*)/(\\w+)/?.*");
+        this.pattern = new RegExp("(http|https)://[^\\/]*/([^\\/]*)/([^\\/]*)/?.*");
     }
     ProjectService.prototype.isProjectPage = function (path) {
         return this.pattern.test(path);
@@ -48745,7 +48745,7 @@ module.exports = "<div class=\"row vertical-center\">\n  <div class=\"col-sm-6 o
 /* 438 */
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"row center-block\" *ngIf=\"ndisable\" [ngClass] = \"{'vertical-center': ndisable}\">\n  <div class=\"col-sm-6 offset-sm-3\" style=\"text-align: center;\">\n    <div class=\"alert alert-warning alert-dismissible fade in\" role=\"alert\">\n      <button (click)=\"removeClass()\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n      <strong>[WARN]</strong> no permission creating config!\n    </div>\n  </div>\n</div>\n<div class=\"row vertical-center\">\n  <div class=\"col-sm-4 offset-sm-4\" style=\"text-align: center;\">\n    <button (click)=\"createProjectConfigSkeleton()\" type=\"button\"\n    class =\"btn btn-outline-info\"\n    [attr.disabled] = \"disable ? true : null\">Create</button>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row center-block\" *ngIf=\"ndisable\" [ngClass] = \"{'vertical-center': ndisable}\">\n  <div class=\"col-sm-6 offset-sm-3\" style=\"text-align: center;\">\n    <div class=\"alert alert-warning alert-dismissible fade in\" role=\"alert\">\n      <button (click)=\"removeClass()\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">\n        <span aria-hidden=\"true\">&times;</span>\n      </button>\n      <strong>[WARN]</strong>cannot creating confs: no auth or not on the project page !\n    </div>\n  </div>\n</div>\n<div class=\"row vertical-center\">\n  <div class=\"col-sm-4 offset-sm-4\" style=\"text-align: center;\">\n    <button (click)=\"createProjectConfigSkeleton()\" type=\"button\"\n    class =\"btn btn-outline-info\"\n    [attr.disabled] = \"disable ? true : null\">Create</button>\n  </div>\n</div>\n"
 
 /***/ },
 /* 439 */
@@ -48757,7 +48757,7 @@ module.exports = "<div class=\"row\" *ngIf=\"notification\" [ngClass] = \"{'vert
 /* 440 */
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"row\" style=\"margin-top: 10px;margin-bottom: 10px\">\n  <div class=\"col-xs-3\">\n    <button type=\"button\" class=\"btn btn-sm\" (click)=\"changeEnv(0)\"\n            [ngClass]=\"{'btn-primary': env==0,'btn-secondary': env==1}\">dev\n    </button>\n    <button type=\"button\" class=\"btn btn-sm\" (click)=\"changeEnv(1)\"\n            [ngClass]=\"{'btn-primary': env==1,'btn-secondary': env==0}\">prd\n    </button>\n  </div>\n  <div class=\"col-xs-3\">\n    <div class=\"input-group-sm\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"key\" [(ngModel)]=\"newKey\">\n    </div>\n  </div>\n  <div class=\"col-xs-4\">\n    <div class=\"input-group-sm\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"value\" [(ngModel)]=\"newValue\">\n    </div>\n  </div>\n  <div class=\"col-xs-2\">\n    <button type=\"button\" class=\"btn btn-sm btn-outline-primary\" (click)=\"addConfig(newKey,newValue)\">add</button>\n  </div>\n</div>\n<table class=\"table table-striped table-bordered table-sm\">\n  <thead>\n  <tr>\n    <th>key</th>\n    <th>value</th>\n    <th style=\"width: 1%;\"></th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let item of props\">\n    <td>{{item.key}}</td>\n    <td>{{item.val}}</td>\n    <td>\n      <button type=\"button\" class=\"btn btn-default btn-sm\" (click)=\"delConfig(item.key)\">-</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
+module.exports = "<div class=\"row\" style=\"margin-top: 10px;margin-bottom: 10px\">\n  <div class=\"col-xs-3\">\n    <button type=\"button\" class=\"btn btn-sm\" (click)=\"changeEnv(0)\"\n            [ngClass]=\"{'btn-primary': env==0,'btn-secondary': env==1}\">dev\n    </button>\n    <button type=\"button\" class=\"btn btn-sm\" (click)=\"changeEnv(1)\"\n            [ngClass]=\"{'btn-primary': env==1,'btn-secondary': env==0}\">prd\n    </button>\n  </div>\n  <div class=\"col-xs-3\" *ngIf=\"show\">\n    <div class=\"input-group-sm\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"key\" [(ngModel)]=\"newKey\">\n    </div>\n  </div>\n  <div class=\"col-xs-4\" *ngIf=\"show\">\n    <div class=\"input-group-sm\">\n      <input type=\"text\" class=\"form-control\" placeholder=\"value\" [(ngModel)]=\"newValue\">\n    </div>\n  </div>\n  <div class=\"col-xs-2\" *ngIf=\"show\">\n    <button type=\"button\" class=\"btn btn-sm btn-outline-primary\" (click)=\"addConfig(newKey,newValue)\">add</button>\n  </div>\n</div>\n<table class=\"table table-striped table-bordered table-sm\">\n  <thead>\n  <tr>\n    <th>key</th>\n    <th>value</th>\n    <th style=\"width: 1%;\" *ngIf=\"show\"></th>\n  </tr>\n  </thead>\n  <tbody>\n  <tr *ngFor=\"let item of props\">\n    <td>{{item.key}}</td>\n    <td>{{item.val}}</td>\n    <td *ngIf=\"show\">\n      <button type=\"button\" class=\"btn btn-default btn-sm\" (click)=\"delConfig(item.key)\">-</button>\n    </td>\n  </tr>\n  </tbody>\n</table>\n"
 
 /***/ },
 /* 441 */
@@ -61717,6 +61717,7 @@ var ManageComponent = (function () {
         this.projectService = projectService;
         this.restfulService = restfulService;
         this.env = 0;
+        this.show = false;
     }
     ManageComponent.prototype.ngOnInit = function () {
         this.getConfig();
@@ -61767,15 +61768,19 @@ var ManageComponent = (function () {
             _this.path = res;
             _this.restfulService.getConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), _this.statusService.retrieve("PRIVATE-KEY"), _this.statusService.retrieve("USER-NAME"), _this.env).subscribe(function (message) {
                 if (message.code === 0) {
-                    var kvmap = void 0;
-                    kvmap = message.body;
-                    _this.props = [];
-                    for (var key in kvmap) {
-                        _this.props.push({
-                            key: key,
-                            val: kvmap[key]
-                        });
-                    }
+                    _this.show = true;
+                }
+                else if (message.code === 1) {
+                    _this.show = false;
+                }
+                var kvmap;
+                kvmap = message.body;
+                _this.props = [];
+                for (var key in kvmap) {
+                    _this.props.push({
+                        key: key,
+                        val: kvmap[key]
+                    });
                 }
             }, function (error) {
                 console.log(error);
