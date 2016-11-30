@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {RestfulService} from "../restful.service";
 import {ProjectService} from "../project.service";
 import {StatusService} from "../status.service";
+import {NavigateService} from "../navigate.service";
 
 @Component({
   providers: [ProjectService, RestfulService, StatusService],
@@ -18,7 +19,8 @@ export class ManageComponent implements OnInit {
 
   constructor(private statusService: StatusService,
               private projectService: ProjectService,
-              private restfulService: RestfulService) {
+              private restfulService: RestfulService,
+              private navigateService: NavigateService) {
   }
 
   ngOnInit() {
@@ -74,6 +76,26 @@ export class ManageComponent implements OnInit {
         message => {
           if(message.code===0){
             this.getConfig();
+          }
+        },
+        error => {
+          console.log(error);
+        });
+    });
+  }
+
+  deleteProjectConfigs () {
+    this.projectService.currentUrl().then((res) => {
+      this.path = res;
+      this.restfulService.delProjectConfigs(
+        this.projectService.projectName(this.path),
+        this.projectService.projectPath(this.path),
+        this.statusService.retrieve("PRIVATE-KEY"),
+        this.statusService.retrieve("USER-NAME")
+      ).subscribe(
+        message => {
+          if(message.code===0){
+            this.navigateService.jump2Target("dispatcher");
           }
         },
         error => {

@@ -83,6 +83,20 @@ export class RestfulService {
       .catch(this.handleError);
   }
 
+  delProjectConfigs (projectName: string, projectPath: string, token: string, username: string): Observable<Message> {
+    let headers = new Headers({
+      'Content-Type': 'application/json',
+      'token': token,
+      'projectpath' : projectPath,
+      'username': username
+    });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.delete(this.restfulUrl + '/config/skeleton/' + projectName + '/', options)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 
   private extractData(res: Response) {
     let body = res.json();

@@ -1,3 +1,8 @@
+<div class="row" style="margin-top: 10px;margin-bottom: 10px" *ngIf="show">
+  <div class="col-xs-12">
+    <button (click) = "deleteProjectConfigs()" type="button" class="btn btn-sm btn-outline-warning">delete configs</button>
+  </div>
+</div>
 <div class="row" style="margin-top: 10px;margin-bottom: 10px">
   <div class="col-xs-3">
     <button type="button" class="btn btn-sm" (click)="changeEnv(0)"
