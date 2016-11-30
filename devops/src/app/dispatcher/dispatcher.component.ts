@@ -30,43 +30,48 @@ export class DispatcherComponent implements OnInit {
       console.log("dispatcher " + res);
       this.path = res;
 
-      this.restfulService.existsProject(
-        this.projectService.projectName(this.path),
-        this.projectService.projectPath(this.path),
-        this.statusService.retrieve("PRIVATE-KEY"),
-        this.statusService.retrieve("USER-NAME"))
-      .subscribe(
-      message => {
-        if (message.body === true) {
-          this.navigateService.jump2Target("manage");
-        } else {
-          if (message.code !== 0) {
-            this.disable = true;
-            this.ndisable = true;
-          }
-        }
-      },
-      error => {
-        console.log(error);
-        this.disable = true;
-        this.ndisable = true;
+      this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(message => {
+        this.restfulService.existsProject(
+          this.projectService.projectName(this.path),
+          this.projectService.projectPath(this.path),
+          message['PRIVATE-KEY'],
+          message['USER-NAME'])
+          .subscribe(
+            message => {
+              if (message.body === true) {
+                this.navigateService.jump2Target("manage");
+              } else {
+                if (message.code !== 0) {
+                  this.disable = true;
+                  this.ndisable = true;
+                }
+              }
+            },
+            error => {
+              console.log(error);
+              this.disable = true;
+              this.ndisable = true;
+            }
+          );
       });
     });
   }
 
   createProjectConfigSkeleton() {
-    this.restfulService.initProjectSkeleton(
-      this.projectService.projectName(this.path),
-      this.projectService.projectPath(this.path),
-      this.statusService.retrieve("PRIVATE-KEY"),
-      this.statusService.retrieve("USER-NAME"))
-    .subscribe(
-      message => {
-        console.log(message);
-        this.navigateService.jump2Target("manage");
-      },
-      error => console.log(error)
-    );
+    this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(message => {
+      this.restfulService.initProjectSkeleton(
+        this.projectService.projectName(this.path),
+        this.projectService.projectPath(this.path),
+        message["PRIVATE-KEY"],
+        message["USER-NAME"])
+        .subscribe(
+          message => {
+            console.log(message);
+            this.navigateService.jump2Target("manage");
+          },
+          error => console.log(error)
+        );
+    });
   }
 
   removeClass () {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ProjectService {
-  private username = window.localStorage.getItem("USER-NAME");
   private pattern;
 
   constructor() {

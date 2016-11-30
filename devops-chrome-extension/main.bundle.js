@@ -20725,6 +20725,8 @@ var NavigateService = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return StatusService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -20735,6 +20737,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 var StatusService = (function () {
     function StatusService() {
@@ -20755,6 +20758,43 @@ var StatusService = (function () {
         else {
             return true;
         }
+    };
+    StatusService.prototype.chromeSyncStore = function (object) {
+        chrome.storage.sync.set(object, function () {
+            console.log("set [object]" + " : " + object);
+        });
+    };
+    StatusService.prototype.chromeSyncRetrieve = function (keyOfkeys) {
+        return __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["Observable"].from(new Promise(function (resolve) {
+            chrome.storage.sync.get(keyOfkeys, function (objs) {
+                console.log("get [" + keyOfkeys + "]" + " : " + objs);
+                resolve(objs);
+            });
+        }));
+    };
+    StatusService.prototype.chromeSyncClear = function (keyOfkeys) {
+        chrome.storage.sync.remove(keyOfkeys, function () {
+            console.log("clear key " + keyOfkeys + " finished!");
+        });
+    };
+    StatusService.prototype.chromeSyncExists = function (keyOfkeys) {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["Observable"].from(new Promise(function (resolve) {
+            chrome.storage.sync.get(keyOfkeys, function (obj) {
+                if (_this.isEmptyObject(obj)) {
+                    resolve(false);
+                }
+                else {
+                    resolve(Object.keys(obj).length === keyOfkeys.length);
+                }
+            });
+        }));
+    };
+    StatusService.prototype.isEmptyObject = function (e) {
+        var t;
+        for (t in e)
+            return !1;
+        return !0;
     };
     StatusService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* Injectable */])(), 
@@ -44504,7 +44544,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ProjectService = (function () {
     function ProjectService() {
-        this.username = window.localStorage.getItem("USER-NAME");
         this.pattern = new RegExp("(http|https)://[^\\/]*/([^\\/]*)/([^\\/]*)/?.*");
     }
     ProjectService.prototype.isProjectPage = function (path) {
@@ -61582,31 +61621,35 @@ var DispatcherComponent = (function () {
             }
             console.log("dispatcher " + res);
             _this.path = res;
-            _this.restfulService.existsProject(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), _this.statusService.retrieve("PRIVATE-KEY"), _this.statusService.retrieve("USER-NAME"))
-                .subscribe(function (message) {
-                if (message.body === true) {
-                    _this.navigateService.jump2Target("manage");
-                }
-                else {
-                    if (message.code !== 0) {
-                        _this.disable = true;
-                        _this.ndisable = true;
+            _this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(function (message) {
+                _this.restfulService.existsProject(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), message['PRIVATE-KEY'], message['USER-NAME'])
+                    .subscribe(function (message) {
+                    if (message.body === true) {
+                        _this.navigateService.jump2Target("manage");
                     }
-                }
-            }, function (error) {
-                console.log(error);
-                _this.disable = true;
-                _this.ndisable = true;
+                    else {
+                        if (message.code !== 0) {
+                            _this.disable = true;
+                            _this.ndisable = true;
+                        }
+                    }
+                }, function (error) {
+                    console.log(error);
+                    _this.disable = true;
+                    _this.ndisable = true;
+                });
             });
         });
     };
     DispatcherComponent.prototype.createProjectConfigSkeleton = function () {
         var _this = this;
-        this.restfulService.initProjectSkeleton(this.projectService.projectName(this.path), this.projectService.projectPath(this.path), this.statusService.retrieve("PRIVATE-KEY"), this.statusService.retrieve("USER-NAME"))
-            .subscribe(function (message) {
-            console.log(message);
-            _this.navigateService.jump2Target("manage");
-        }, function (error) { return console.log(error); });
+        this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(function (message) {
+            _this.restfulService.initProjectSkeleton(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), message["PRIVATE-KEY"], message["USER-NAME"])
+                .subscribe(function (message) {
+                console.log(message);
+                _this.navigateService.jump2Target("manage");
+            }, function (error) { return console.log(error); });
+        });
     };
     DispatcherComponent.prototype.removeClass = function () {
         this.ndisable = false;
@@ -61667,16 +61710,21 @@ var LoginComponent = (function () {
         this.notification = false;
     }
     LoginComponent.prototype.ngOnInit = function () {
-        if (this.statusService.exists("PRIVATE-KEY") && this.statusService.exists("USER-NAME")) {
-            this.navigateService.jump2Target('dispatcher');
-        }
+        var _this = this;
+        this.statusService
+            .chromeSyncExists(["PRIVATE-KEY", "USER-NAME"])
+            .subscribe(function (message) {
+            if (message == true) {
+                _this.navigateService.jump2Target('dispatcher');
+            }
+        });
     };
     LoginComponent.prototype.onSubmit = function (privateKey, userName) {
         var privateKeyLength = privateKey.length;
         var userNameLength = userName.length;
         if (privateKeyLength !== 0 && userNameLength !== 0) {
-            this.statusService.store("PRIVATE-KEY", privateKey);
-            this.statusService.store("USER-NAME", userName);
+            this.statusService.chromeSyncStore({ "PRIVATE-KEY": privateKey });
+            this.statusService.chromeSyncStore({ "USER-NAME": userName });
             this.navigateService.jump2Target('dispatcher');
         }
         else {
@@ -61754,12 +61802,14 @@ var ManageComponent = (function () {
         }
         this.projectService.currentUrl().then(function (res) {
             _this.path = res;
-            _this.restfulService.addConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), _this.statusService.retrieve("PRIVATE-KEY"), _this.statusService.retrieve("USER-NAME"), _this.env, key, value).subscribe(function (message) {
-                if (message.code === 0) {
-                    _this.getConfig();
-                }
-            }, function (error) {
-                console.log(error);
+            _this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(function (message) {
+                _this.restfulService.addConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), message["PRIVATE-KEY"], message["USER-NAME"], _this.env, key, value).subscribe(function (message) {
+                    if (message.code === 0) {
+                        _this.getConfig();
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
             });
         });
     };
@@ -61768,12 +61818,14 @@ var ManageComponent = (function () {
         console.log('del start:' + key);
         this.projectService.currentUrl().then(function (res) {
             _this.path = res;
-            _this.restfulService.delConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), _this.statusService.retrieve("PRIVATE-KEY"), _this.statusService.retrieve("USER-NAME"), _this.env, key).subscribe(function (message) {
-                if (message.code === 0) {
-                    _this.getConfig();
-                }
-            }, function (error) {
-                console.log(error);
+            _this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(function (message) {
+                _this.restfulService.delConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), message["PRIVATE-KEY"], message["USER-NAME"], _this.env, key).subscribe(function (message) {
+                    if (message.code === 0) {
+                        _this.getConfig();
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
             });
         });
     };
@@ -61781,12 +61833,14 @@ var ManageComponent = (function () {
         var _this = this;
         this.projectService.currentUrl().then(function (res) {
             _this.path = res;
-            _this.restfulService.delProjectConfigs(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), _this.statusService.retrieve("PRIVATE-KEY"), _this.statusService.retrieve("USER-NAME")).subscribe(function (message) {
-                if (message.code === 0) {
-                    _this.navigateService.jump2Target("dispatcher");
-                }
-            }, function (error) {
-                console.log(error);
+            _this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(function (message) {
+                _this.restfulService.delProjectConfigs(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), message["PRIVATE-KEY"], message["USER-NAME"]).subscribe(function (message) {
+                    if (message.code === 0) {
+                        _this.navigateService.jump2Target("dispatcher");
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
             });
         });
     };
@@ -61794,24 +61848,26 @@ var ManageComponent = (function () {
         var _this = this;
         this.projectService.currentUrl().then(function (res) {
             _this.path = res;
-            _this.restfulService.getConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), _this.statusService.retrieve("PRIVATE-KEY"), _this.statusService.retrieve("USER-NAME"), _this.env).subscribe(function (message) {
-                if (message.code === 0) {
-                    _this.show = true;
-                }
-                else if (message.code === 1) {
-                    _this.show = false;
-                }
-                var kvmap;
-                kvmap = message.body;
-                _this.props = [];
-                for (var key in kvmap) {
-                    _this.props.push({
-                        key: key,
-                        val: kvmap[key]
-                    });
-                }
-            }, function (error) {
-                console.log(error);
+            _this.statusService.chromeSyncRetrieve(["PRIVATE-KEY", "USER-NAME"]).subscribe(function (message) {
+                _this.restfulService.getConfig(_this.projectService.projectName(_this.path), _this.projectService.projectPath(_this.path), message["PRIVATE-KEY"], message["USER-NAME"], _this.env).subscribe(function (message) {
+                    if (message.code === 0) {
+                        _this.show = true;
+                    }
+                    else if (message.code === 1) {
+                        _this.show = false;
+                    }
+                    var kvmap;
+                    kvmap = message.body;
+                    _this.props = [];
+                    for (var key in kvmap) {
+                        _this.props.push({
+                            key: key,
+                            val: kvmap[key]
+                        });
+                    }
+                }, function (error) {
+                    console.log(error);
+                });
             });
         });
     };
