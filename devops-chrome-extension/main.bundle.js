@@ -44595,7 +44595,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var RestfulService = (function () {
     function RestfulService(http) {
         this.http = http;
-        this.restfulUrl = 'http://192.168.33.142:8080'; //TODO URL to web API
+        this.restfulUrl = 'http://192.168.33.224:1234'; //TODO URL to web API
     }
     RestfulService.prototype.existsProject = function (projectName, projectPath, token, username) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({

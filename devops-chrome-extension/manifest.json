@@ -13,7 +13,7 @@
         "default_popup": "index.html"
     },
     "permissions": [
-        "http://192.168.33.142:8080/",
+        "http://192.168.33.224:1234/",
         "tabs",
         "storage"
     ],
