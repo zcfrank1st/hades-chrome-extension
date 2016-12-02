@@ -5,11 +5,11 @@
 </div>
 <div class="row" style="margin-top: 10px;margin-bottom: 10px">
   <div class="col-xs-3">
-    <button type="button" class="btn btn-sm" (click)="changeEnv(0)"
-            [ngClass]="{'btn-primary': env==0,'btn-secondary': env==1}">dev
-    </button>
     <button type="button" class="btn btn-sm" (click)="changeEnv(1)"
-            [ngClass]="{'btn-primary': env==1,'btn-secondary': env==0}">prd
+            [ngClass]="{'btn-primary': env==1,'btn-secondary': env==0}">dev
+    </button>
+    <button type="button" class="btn btn-sm" (click)="changeEnv(0)"
+            [ngClass]="{'btn-primary': env==0,'btn-secondary': env==1}">prd
     </button>
   </div>
   <div class="col-xs-3" *ngIf="show">
