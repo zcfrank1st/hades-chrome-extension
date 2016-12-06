@@ -44507,8 +44507,7 @@ var AppComponent = (function () {
         this.navigateService = navigateService;
     }
     AppComponent.prototype.clearMeta = function () {
-        this.statusService.clear("PRIVATE-KEY");
-        this.statusService.clear("USER-NAME");
+        this.statusService.chromeSyncClear(["PRIVATE-KEY", "USER-NAME"]);
         this.navigateService.jump2Target("login");
     };
     AppComponent = __decorate([
@@ -44595,7 +44594,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var RestfulService = (function () {
     function RestfulService(http) {
         this.http = http;
-        this.restfulUrl = 'http://192.168.33.223:1234'; //TODO URL to web API
+        this.restfulUrl = 'http://192.168.33.213:1234'; //TODO URL to web API
     }
     RestfulService.prototype.existsProject = function (projectName, projectPath, token, username) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({

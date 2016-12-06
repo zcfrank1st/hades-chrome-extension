@@ -17,8 +17,7 @@ export class AppComponent {
     private navigateService: NavigateService) {}
 
   clearMeta() {
-    this.statusService.clear("PRIVATE-KEY");
-    this.statusService.clear("USER-NAME");
+    this.statusService.chromeSyncClear(["PRIVATE-KEY", "USER-NAME"]);
     this.navigateService.jump2Target("login");
   }
 }
