@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RestfulService {
-  private restfulUrl = 'http://192.168.33.213:1234';  //TODO URL to web API
+  private restfulUrl = 'http://192.168.33.223:1234';  //TODO URL to web API
 
   constructor (private http: Http) {}
 
